@@ -419,7 +419,7 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 	// Panels.
 	{
 		// Panel.
-		p_theme->set_stylebox(SceneStringName(panel), "Panel", EditorThemeManager::make_flat_stylebox(p_config.dark_color_1, 6, 4, 6, 4, p_config.corner_radius));
+		p_theme->set_stylebox(SceneStringName(panel), "Panel", EditorThemeManager::make_flat_stylebox(p_config.dark_color_1, 8, 6, 8, 6, p_config.corner_radius));
 
 		// PanelContainer.
 		p_theme->set_stylebox(SceneStringName(panel), "PanelContainer", p_config.base_empty_wide_style);
@@ -434,8 +434,10 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 
 			Ref<StyleBoxFlat> tooltip_style = p_config.base_style->duplicate();
 			tooltip_style->set_bg_color(p_config.surface_popup_color);
-			tooltip_style->set_content_margin_all(0);
-			tooltip_style->set_corner_radius_all(0);
+			tooltip_style->set_shadow_color(Color(0, 0, 0, 0.15));
+			tooltip_style->set_shadow_size(4 * EDSCALE);
+			tooltip_style->set_content_margin_all(8 * EDSCALE);
+			tooltip_style->set_corner_radius_all(p_config.corner_radius);
 			if (p_config.draw_extra_borders) {
 				tooltip_style->set_border_width_all(Math::round(EDSCALE));
 				tooltip_style->set_border_color(p_config.extra_border_color_2);
@@ -449,12 +451,12 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 		popup_panel_style->set_shadow_color(Color(0, 0, 0, 0.3));
 		popup_panel_style->set_shadow_size(p_config.base_margin * 0.75 * EDSCALE);
 		popup_panel_style->set_content_margin_all(p_config.popup_margin);
-		popup_panel_style->set_corner_radius_all(0);
+		popup_panel_style->set_corner_radius_all(p_config.corner_radius);
 		if (p_config.draw_extra_borders) {
 			popup_panel_style->set_border_width_all(Math::round(EDSCALE));
 			popup_panel_style->set_border_color(p_config.extra_border_color_2);
 		}
-		p_theme->set_stylebox(SceneStringName(panel), "PopupPanel", p_config.popup_panel_style);
+		p_theme->set_stylebox(SceneStringName(panel), "PopupPanel", popup_panel_style);
 	}
 
 	// Buttons.

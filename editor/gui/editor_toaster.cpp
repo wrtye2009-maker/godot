@@ -119,18 +119,20 @@ void EditorToaster::_notification(int p_what) {
 			// Styleboxes background.
 			const Color base_color = get_theme_color(SNAME("base_color"), EditorStringName(Editor));
 			const Color bg_color = base_color.lerp(get_theme_color(SNAME("mono_color"), EditorStringName(Editor)), 0.08);
+			const Color bg_progress_color = base_color.lerp(get_theme_color(SNAME("mono_color"), EditorStringName(Editor)), 0.135);
 
 			info_panel_style_background->set_bg_color(bg_color);
+			info_panel_style_background->set_border_width_all(0);
 
 			warning_panel_style_background->set_bg_color(bg_color);
+			warning_panel_style_background->set_border_width_all(Math::round(EDSCALE));
 			warning_panel_style_background->set_border_color(get_theme_color(SNAME("warning_color"), EditorStringName(Editor)));
 
 			error_panel_style_background->set_bg_color(bg_color);
+			error_panel_style_background->set_border_width_all(Math::round(EDSCALE));
 			error_panel_style_background->set_border_color(get_theme_color(SNAME("error_color"), EditorStringName(Editor)));
 
 			// Styleboxes progress.
-			const Color bg_progress_color = base_color.lerp(get_theme_color(SNAME("mono_color"), EditorStringName(Editor)), 0.135);
-
 			info_panel_style_progress->set_bg_color(bg_progress_color);
 
 			warning_panel_style_progress->set_bg_color(bg_progress_color);
@@ -396,8 +398,7 @@ Control *EditorToaster::popup(Control *p_control, Severity p_severity, double p_
 	HBoxContainer *hbox_container = memnew(HBoxContainer);
 	hbox_container->set_h_size_flags(SIZE_EXPAND_FILL);
 	panel->add_child(hbox_container);
-
-	// Content control.
+	hbox_container->add_theme_constant_override("separation", 8 * EDSCALE);
 	p_control->set_h_size_flags(SIZE_EXPAND_FILL);
 	hbox_container->add_child(p_control);
 
@@ -462,7 +463,7 @@ void EditorToaster::_popup_str(const String &p_message, Severity p_severity, con
 	// Create a new message if needed.
 	if (control == nullptr) {
 		HBoxContainer *hb = memnew(HBoxContainer);
-		hb->add_theme_constant_override("separation", 0);
+		hb->add_theme_constant_override("separation", 8 * EDSCALE);
 
 		Label *label = memnew(Label);
 		label->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
@@ -583,16 +584,18 @@ EditorToaster::EditorToaster() {
 	info_panel_style_background->set_corner_radius_all(stylebox_radius * EDSCALE);
 
 	warning_panel_style_background.instantiate();
-	warning_panel_style_background->set_border_width(border_side, stylebox_radius * EDSCALE);
+	warning_panel_style_background->set_border_width_all(int(EDSCALE));
 	warning_panel_style_background->set_corner_radius_all(stylebox_radius * EDSCALE);
 
 	error_panel_style_background.instantiate();
-	error_panel_style_background->set_border_width(border_side, stylebox_radius * EDSCALE);
+	error_panel_style_background->set_border_width_all(int(EDSCALE));
 	error_panel_style_background->set_corner_radius_all(stylebox_radius * EDSCALE);
 
 	Ref<StyleBoxFlat> boxes[] = { info_panel_style_background, warning_panel_style_background, error_panel_style_background };
 	for (int i = 0; i < 3; i++) {
-		boxes[i]->set_content_margin_individual(int(stylebox_radius * 2.5), 3, int(stylebox_radius * 2.5), 3);
+		boxes[i]->set_shadow_color(Color(0, 0, 0, 0.12));
+		boxes[i]->set_shadow_size(stylebox_radius * 0.75 * EDSCALE);
+		boxes[i]->set_content_margin_all(int(stylebox_radius * 2.5 * EDSCALE));
 	}
 
 	// Theming (progress).
@@ -600,11 +603,11 @@ EditorToaster::EditorToaster() {
 	info_panel_style_progress->set_corner_radius_all(stylebox_radius * EDSCALE);
 
 	warning_panel_style_progress.instantiate();
-	warning_panel_style_progress->set_border_width(border_side, stylebox_radius * EDSCALE);
+	warning_panel_style_progress->set_border_width_all(int(EDSCALE));
 	warning_panel_style_progress->set_corner_radius_all(stylebox_radius * EDSCALE);
 
 	error_panel_style_progress.instantiate();
-	error_panel_style_progress->set_border_width(border_side, stylebox_radius * EDSCALE);
+	error_panel_style_progress->set_border_width_all(int(EDSCALE));
 	error_panel_style_progress->set_corner_radius_all(stylebox_radius * EDSCALE);
 
 	// Main button.
